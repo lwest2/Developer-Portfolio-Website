@@ -1,0 +1,179 @@
+
+
+/*
+ * Colors
+ * Primary: #343a40
+ * Light: #9a9da0
+ * Secondary: #2e7d32
+ * S-light: #60ad5e
+ * S-dark: #005005
+ */
+
+/*
+ * Global
+ */
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  font-weight: 500;
+}
+
+.btn-link {
+  color: rgba(255,255,255,.5);
+}
+
+.btn-link:hover {
+  color: rgba(255,255,255,.75);
+  text-decoration: none;
+}
+
+.signinicon {
+  margin-left: 5px;
+}
+
+.btnSignUp {
+  background-color: #2e7d32;
+  border-color: #2e7d32;
+  color: white;
+  font-weight: 700;
+}
+
+.btnSignUp:hover {
+  background-color: #60ad5e;
+  border-color: #60ad5e;
+  color: #343a40;
+}
+/*
+ * Footer
+ * Reference: https://markheath.net/post/font-awesome-circle-background
+ */
+
+.footerHelper {
+  background-color: #343a40;
+  margin-top: 100px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.iconBackground {
+    color: #2e7d32;
+}
+
+.iconHover:hover .iconBackground{
+   color: #60ad5e;
+}
+
+.footerIcon {
+  color: #343a40;
+}
+
+.icon {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.footerNav {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.footer2Helper {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #2e7d32;
+  color: white;
+}
+
+.slogon {
+  text-align: center;
+  font-weight: 500;
+}
+
+.copyrightnotice {
+  text-align: center;
+  font-size: .7em;
+}
+
+/*
+ * Footer
+ */
+
+ .jumbotronHelper {
+   text-align: center;
+ }
+
+ .jumbotronButton {
+   background-color: #2e7d32;
+   border-color: #2e7d32;
+   color: #e9ecef;
+   font-weight: 700;
+ }
+
+ .jumbotronButton:hover {
+   background-color: #60ad5e;
+   border-color: #60ad5e;
+ }
+
+ /*
+  * Homepage
+  */
+
+.recentBlogTitle {
+  margin-bottom: 25px;
+}
+
+.recentBlogSubtitle {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.recentBlogDate {
+  display: inline-block;
+}
+
+.gotopost {
+  margin-left: 5px;
+}
+
+.footerIconBlog {
+  color: #e9ecef;
+}
+
+.blogcontenthelper {
+  padding-left: 0;
+}
+
+.iconComment {
+  margin-right: 5px;
+}
+
+.aboutmeTitle {
+  margin-bottom: 25px;
+  margin-top: 100px;
+}
+
+.aboutmeHelper {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+/*
+ * Blog
+ */
+
+ .BlogTitle {
+   margin-bottom: 25px;
+   margin-top: 35px;
+ }
+
+.spacer {
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
