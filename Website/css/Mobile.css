@@ -1,0 +1,7 @@
+button:focus{
+  outline: none;
+}
+
+.navbar-dark .navbar-toggler {
+  border: none;
+}
