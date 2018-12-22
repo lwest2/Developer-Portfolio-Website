@@ -179,6 +179,43 @@ body {
 }
 
 /*
+ * Blog Post
+ */
+
+.BlogSubtitle {
+  margin-bottom: 25px;
+  margin-top: -10px;
+  font-size: 1.2em;
+}
+
+.buttonBacktoblog {
+  margin-top: 20px;
+}
+
+.blogpmargins {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.textAreaComments {
+  resize: none;
+  width: 100%;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.labelComments {
+  display:block;
+}
+
+.blogpostbtnHelper {
+  max-height: 0;
+  transition: max-height 0.15s ease-out;
+  overflow:hidden;
+}
+
+/*
  * Portfolio
  */
 
