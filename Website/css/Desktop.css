@@ -234,3 +234,87 @@ body {
    filter: alpha(opacity=70); /* For IE8 and earlier */
    transition: opacity 0.5s;
  }
+
+
+ /*
+  * Admin Panel
+  */
+
+  /*
+   * Tabs
+   */
+
+.adminTab {
+  background-color: #2e7d32;
+  border-color: #2e7d32;
+  color: #e9ecef;
+  font-weight: 700;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.adminTab:hover {
+    color: #e9ecef;
+    background-color: #60ad5e;
+    border-color: #60ad5e;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+  background-color: #60ad5e;
+  border-color: #60ad5e;
+  color: #e9ecef;
+  font-weight: 700;
+}
+
+.adminSecondaryTab {
+  font-weight: bold;
+  color: #495057;
+}
+
+.adminSecondaryTab:hover {
+  color: #495057;
+}
+
+.nav-tabs {
+  border-color: #60ad5e;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-color: #60ad5e #60ad5e #fff;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active:hover {
+  border-color: #60ad5e #60ad5e #fff;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: #60ad5e #60ad5e #60ad5e;
+}
+
+.forms {
+  margin-top: 20px;
+}
+
+/*
+ * Users
+ */
+
+select.form-control[multiple], select.form-control[size] {
+  height: 500px;
+}
+
+.btnUserList {
+  margin-top: 50px;
+}
+
+.btnUserList2 {
+  margin-top: 10px;
+}
+
+/*
+ * Manage Portfolio
+ */
+
+ .clearBtn {
+   margin-left: 10px;
+ }
