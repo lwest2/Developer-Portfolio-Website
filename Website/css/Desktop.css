@@ -318,3 +318,24 @@ select.form-control[multiple], select.form-control[size] {
  .clearBtn {
    margin-left: 10px;
  }
+
+ /*
+  * Signin
+  */
+
+.cardStyles {
+  margin-top: 50px;
+}
+
+.btnSigninStyles {
+  margin-top: 10px;
+}
+
+.signinlabel {
+  font-weight: 500;
+}
+
+.btnRegister {
+  background-color: #495057;
+  border-color: #495057;
+}

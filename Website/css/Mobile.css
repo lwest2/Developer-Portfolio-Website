@@ -335,3 +335,19 @@ select.form-control[multiple], select.form-control[size] {
  .clearBtn {
    margin-left: 10px;
  }
+
+ /*
+  * Signin
+  */
+
+.cardStyles {
+  margin-top: 20px;
+}
+
+.or {
+  display: none;
+}
+
+.signinlabel {
+  font-weight: 500;
+}

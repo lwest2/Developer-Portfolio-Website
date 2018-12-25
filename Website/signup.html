@@ -47,8 +47,8 @@
           </ul>
         </div>
         <form class="form-inline my-2 my-lg-0">
-          <button href="signin.html" class="btn btn-link btn-sm my-2 my-sm-0" type="submit">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
-          <button href="signup.html" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="submit">Sign Up</button>
+          <button onclick="location.href='signin.html'" class="btn btn-link btn-sm my-2 my-sm-0" type="button">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
+          <button onclick="location.href='signup.html'" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="button">Sign Up</button>
         </form>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -61,13 +61,53 @@
       <!-- Main Content -->
       <!-- Paragraph Cluster -->
       <article role="article">
-
+        <div class="row">
+          <div class="col-sm" align="center">
+            <div class="card cardStyles" style="width: 23rem;">
+              <div class="card-body">
+                <h5 class="card-title">Sign Up</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Please enter the following to Sign-up and use our exclusive services.</h6>
+                <hr class="spacer">
+                </hr>
+                <div class="row">
+                  <div class="col-sm" align="left">
+                    <form>
+                      <div class="form-group">
+                        <label for="email" class="signinlabel">Email address *</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter E-mail">
+                      </div>
+                      <div class="form-group">
+                        <label for="email" class="signinlabel">Confirm E-mail address *</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Confirm E-mail">
+                      </div>
+                      <div class="form-group">
+                        <label for="password" class="signinlabel">Password *</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                      </div>
+                      <div class="form-group">
+                        <label for="password" class="signinlabel">Confirm Password *</label>
+                        <input type="password" class="form-control" id="password" placeholder="Confirm Password">
+                      </div>
+                      <small id="emailHelp" class="form-text text-muted">* Required.</small></small>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col btnSigninStyles" align="right">
+                    <button href="#" class="btn btn-primary jumbotronButton shadow btn-sm my-2 my-sm-0" type="submit">Register</button>
+                  </div>
+                  <div class="col-sm-2 or">
+                    <p>or</p>
+                  </div>
+                  <div class="col btnSigninStyles" align="left">
+                    <button href="signup.html" class="btn btn-primary jumbotronButton btnRegister shadow btn-sm my-2 my-sm-0" type="submit">Login</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
-
-      <!-- Div Complementary -->
-      <aside role="complementary">
-
-      </aside>
     </main>
 
     <footer role="contentinfo">
