@@ -1,25 +1,21 @@
 {
-  "name": "Node",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "node",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "cucumber-js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "cucumber": "^5.0.3"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.16.4",
-    "express-session": "^1.15.6",
+    "cookie-parser": "~1.4.3",
+    "cucumber": "^5.0.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-handlebars": "^3.0.0",
+    "http-errors": "~1.6.2",
     "mongodb": "^3.1.10",
-    "mongoose": "^5.4.0",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "mongoose": "^5.4.1",
+    "morgan": "~1.9.0",
+    "serve-favicon": "^2.5.0"
   }
 }
