@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var hbs = require('express-handlebars')
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
+var expressValidator = require('express-validator');
+var expressSession = require('express-session');
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -18,13 +21,27 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
   extended: false
+}));
+app.use(expressValidator({
+  customValidators: {
+    isEmailValid: function(email) {
+      console.log("ready to find");
+      User.findOne({
+        'email': email
+      });
+    }
+  }
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(expressSession({
+  secret: 'liam',
+  saveUninitialized: false,
+  resave: false
+}));
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler

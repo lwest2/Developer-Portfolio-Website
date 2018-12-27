@@ -1,26 +1,26 @@
 <header role="banner">
   <!-- Navigation & Brand -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">
+    <a class="navbar-brand" href="/">
       <img src="" width="30" height="30" class="d-inline-block align-top brandimg" alt="">
       DevLiamW
     </a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="blog.html">Blog</a>
+          <a class="nav-link" href="/blog">Blog</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="portfolio.html">Portfolio</a>
+          <a class="nav-link" href="/portfolio">Portfolio</a>
         </li>
       </ul>
     </div>
     <form class="form-inline my-2 my-lg-0">
-      <button onclick="location.href='signin.html'" class="btn btn-link btn-sm my-2 my-sm-0" type="button">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
-      <button onclick="location.href='signup.html'" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="button">Sign Up</button>
+      <button onclick="location.href='/signin'" class="btn btn-link btn-sm my-2 my-sm-0" type="button">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
+      <button onclick="location.href='/signup'" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="button">Sign Up</button>
     </form>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -43,34 +43,47 @@
             </hr>
             <div class="row">
               <div class="col-sm" align="left">
-                <form>
+                <form action"/signup" method="POST">
                   <div class="form-group">
                     <label for="email" class="signinlabel">Email address *</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter E-mail">
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter E-mail" name="emailSignup">
                   </div>
                   <div class="form-group">
                     <label for="email" class="signinlabel">Confirm E-mail address *</label>
-                    <input type="email" class="form-control" id="confEmail" aria-describedby="emailHelp" placeholder="Confirm E-mail">
+                    <input type="email" class="form-control" id="confEmail" aria-describedby="emailHelp" placeholder="Confirm E-mail" name="confEmailSignup">
                   </div>
                   <div class="form-group">
                     <label for="password" class="signinlabel">Password *</label>
-                    <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                    <input type="password" class="form-control" id="password" placeholder="Enter Password" name="passwordSignup">
                   </div>
                   <div class="form-group">
                     <label for="password" class="signinlabel">Confirm Password *</label>
-                    <input type="password" class="form-control" id="confPassword" placeholder="Confirm Password">
+                    <input type="password" class="form-control" id="confPassword" placeholder="Confirm Password" name="confPasswordSignup">
                   </div>
                   <small id="emailHelp" class="form-text text-muted">* Required.</small></small>
                   <div class="form-group">
-                    <div class="alert alert-danger" role="alert" id="msgDiv"></div>
-                  </div>
-                  <div class="form-group">
                     <div class="row">
                       <div class="col btnSigninStyles" align="center">
-                        <button id="registerbutton" class="btn btn-primary jumbotronButton shadow btn-sm my-2 my-sm-0" type="button" name="submit">Register</button>
+                        <button id="registerbutton" class="btn btn-primary jumbotronButton shadow btn-sm my-2 my-sm-0" type="submit" name="submit">Register</button>
                       </div>
                     </div>
                   </div>
+                  {{# if errors}}
+                  <div class="form-group">
+                    <div class="errors alert alert-danger" role="alert">
+                      <ul>
+                        {{# each errors }}
+                          <li>{{ this.msg }}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  </div>
+                  {{/if}}
+                  {{#if success}}
+                  <div class="form-group">
+                    <div class="success alert alert-success" role="alert">You are now registered.</div>
+                  </div>
+                  {{/if}}
                 </form>
               </div>
             </div>
@@ -106,11 +119,11 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm" align="center">
-            <button class="btn btn-link footerNav" href="index.html"><span>Home</span></button>
-            <button class="btn btn-link footerNav" href="blog.html"><span>Blog</span></button>
-            <button class="btn btn-link footerNav" href="portfolio.html"><span>Portfolio</span></button>
-            <button class="btn btn-link footerNav" href="signin.html"><span>Sign In</span></button>
-            <button class="btn btn-link footerNav" href="signup.html"><span>Sign Up</span></button>
+            <button class="btn btn-link footerNav" href="/"><span>Home</span></button>
+            <button class="btn btn-link footerNav" href="/blog"><span>Blog</span></button>
+            <button class="btn btn-link footerNav" href="/portfolio"><span>Portfolio</span></button>
+            <button class="btn btn-link footerNav" href="/signin"><span>Sign In</span></button>
+            <button class="btn btn-link footerNav" href="/signup"><span>Sign Up</span></button>
           </div>
         </div>
       </div>
@@ -142,7 +155,6 @@
 </script>
 <script src="javascripts/plugins.js"></script>
 <script src="javascripts/main.js"></script>
-<script src="javascripts/app.js"></script>
 
 <!-- Google Analytics -->
 <script>
