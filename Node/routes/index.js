@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var assert = require('assert');
 var mongoose = require('mongoose');
+
+//password encryption
+var bcrypt = require('bcryptjs');
+
 // Ux1gby6fno28IRcd
 
 const uri = "mongodb://pstLiam:Ux1gby6fno28IRcd@cluster0-shard-00-00-7vtg3.mongodb.net:27017,cluster0-shard-00-01-7vtg3.mongodb.net:27017,cluster0-shard-00-02-7vtg3.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
@@ -111,9 +115,15 @@ router.post('/signup', function(req, res, next) {
     // add to db
     req.session.success = true;
     // Add to database
+
+    // hash passwordSignup
+
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(req.body.passwordSignup, salt);
+
     var userData = {
       email: req.body.emailSignup,
-      password: req.body.passwordSignup
+      password: hash
     }
 
     var data = new User(userData);
