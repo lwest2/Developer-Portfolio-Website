@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var assert = require('assert');
-var mongoose = require('mongoose');
 
+var mongoose = require('mongoose');
 //password encryption
 var bcrypt = require('bcryptjs');
 
@@ -27,7 +27,7 @@ var UserSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
   },
   password: {
     type: String,
@@ -95,8 +95,6 @@ router.get('/signup', function(req, res, next) {
 
 router.post('/signup', function(req, res, next) {
 
-  // NEED TO ADD EXISTING EMAIL VALIDATION
-
   // Checking validation
   req.check('emailSignup').isEmail().withMessage('Invalid E-mail address').equals(req.body.confEmailSignup).withMessage('E-mails do not match');
 
@@ -105,32 +103,51 @@ router.post('/signup', function(req, res, next) {
   }).withMessage('Invalid password').equals(req.body.confPasswordSignup).withMessage('Passwords do not match.');
 
   var errors = req.validationErrors();
-
-  if (errors) {
-    // if errors
-    req.session.errors = errors;
-    req.session.success = false;
-  } else {
-    // if success & no errors
-    // add to db
-    req.session.success = true;
-    // Add to database
-
-    // hash passwordSignup
-
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(req.body.passwordSignup, salt);
-
-    var userData = {
-      email: req.body.emailSignup,
-      password: hash
+  User.findOne({
+    email: req.body.emailSignup
+  }, function(err, user) {
+    console.log("USER: " + user);
+    if (user) {
+      var error = {
+        param: "emailSignup",
+        msg: "Email already exists",
+        value: req.body.emailSignup
+      };
+      if (!errors) {
+        errors = [];
+      }
+      errors.push(error);
     }
 
-    var data = new User(userData);
-    data.save();
+    console.log("ERRORS AFTER: " + errors);
 
-  }
-  res.redirect('/signup');
+    if (errors) {
+      // if errors
+      req.session.errors = errors;
+      req.session.success = false;
+    } else {
+      // if success & no errors
+      // add to db
+      req.session.success = true;
+      // Add to database
+
+      // hash passwordSignup
+
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync(req.body.passwordSignup, salt);
+
+      var userData = {
+        email: req.body.emailSignup,
+        password: hash
+      }
+
+      var data = new User(userData);
+      // reference: https://stackoverflow.com/questions/48581681/node-app-crashes-when-receiving-a-duplicate-email-address-e11000-duplicate-key-e
+      data.save();
+    }
+
+    res.redirect('/signup');
+  });
 });
 
 router.get('/admin', function(req, res, next) {
