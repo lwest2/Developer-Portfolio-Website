@@ -32,6 +32,9 @@ var UserSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  loggedIn: {
+    type: Boolean,
   }
 }, {
   collection: 'users'
@@ -43,7 +46,8 @@ var User = mongoose.model('User', UserSchema);
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
-    Title: 'DevLiamW - Homepage'
+    Title: 'DevLiamW - Homepage',
+    logOut: req.session.logOut
 
   });
 });
@@ -51,37 +55,119 @@ router.get('/', function(req, res, next) {
 /* GET blog page. */
 router.get('/blog', function(req, res, next) {
   res.render('blog', {
-    Title: 'DevLiamW - Blog'
+    Title: 'DevLiamW - Blog',
+    logOut: req.session.logOut
 
   });
 });
 
 router.get('/blogpost', function(req, res, next) {
   res.render('blogpost', {
-    Title: 'DevLiamW - Blog Post'
+    Title: 'DevLiamW - Blog Post',
+    logOut: req.session.logOut
   });
 });
 
 /* GET portfolio page. */
 router.get('/portfolio', function(req, res, next) {
   res.render('portfolio', {
-    Title: 'DevLiamW - Portfolio'
+    Title: 'DevLiamW - Portfolio',
+    logOut: req.session.logOut
 
   });
 });
 
 router.get('/portfolioitem', function(req, res, next) {
   res.render('portfolioitem', {
-    Title: 'DevLiamW - Portfolio Item'
+    Title: 'DevLiamW - Portfolio Item',
+    logOut: req.session.logOut
+  });
+});
 
+router.post('/signout', function(req, res, next) {
+  req.session.logOut = false;
+  console.log("USER VALUES" + req.session.userValues);
+  var userData = req.session.userValues;
+  // change loggedin to false for user of session
+  User.findOne({
+    email: userData.email
+  }, function(err, user) {
+    if (user) {
+      // if user exists
+      if (user.loggedIn) {
+        user.loggedIn = false;
+        user.save(function(err) {
+          if (err) {
+            console.log("error saving userdata");
+          }
+        })
+      } else {
+        console.log("User is not loggedIn");
+      }
+    } else {
+      console.log("Error finding user");
+    }
+
+    req.session.destroy();
+    res.redirect('/');
   });
 });
 
 router.get('/signin', function(req, res, next) {
   res.render('signin', {
-    Title: 'DevLiamW - Sign In'
-
+    Title: 'DevLiamW - Sign In',
+    successSignin: req.session.sucessSignin,
+    errorSignin: req.session.errorSignin,
+    errorLoggedin: req.session.errorLoggedin,
+    logOut: req.session.logOut,
   });
+});
+
+router.post('/signin', function(req, res, next) {
+  // check if email is in DB
+
+  User.findOne({
+    email: req.body.emailSignin
+  }, function(err, user) {
+    console.log("USER" + user);
+    if (user) {
+      // if user exists login
+      // check password
+      if (bcrypt.compareSync(req.body.passwordSignin, user.password)) {
+        if (!user.loggedIn) {
+          req.session.sucessSignin = true;
+          req.session.errorSignin = false;
+          req.session.errorLoggedin = false;
+          user.loggedIn = true;
+          req.session.logOut = true;
+          req.session.userValues = user;
+          user.save(function(err) {
+            if (err) {
+              console.log("user update error");
+            }
+          });
+          console.log("USER NOW LOGGED IN");
+        } else {
+          req.session.errorLoggedin = true;
+          req.session.successSignin = false;
+        }
+      } else {
+        req.session.successSignin = false;
+        req.session.errorSignin = true;
+        req.session.errorLoggedin = false;
+        console.log("PASSWORD DOES NOT MATCH");
+      }
+
+    } else {
+      req.session.successSignin = false;
+      req.session.errorSignin = true;
+      req.session.errorLoggedin = false;
+      console.log("COULD NOT FIND EMAIL");
+    }
+
+    res.redirect('/signin');
+  });
+  // check password matches
 });
 
 router.get('/signup', function(req, res, next) {
@@ -138,7 +224,8 @@ router.post('/signup', function(req, res, next) {
 
       var userData = {
         email: req.body.emailSignup,
-        password: hash
+        password: hash,
+        loggedIn: false
       }
 
       var data = new User(userData);
@@ -152,7 +239,8 @@ router.post('/signup', function(req, res, next) {
 
 router.get('/admin', function(req, res, next) {
   res.render('admin', {
-    Title: 'DevLiamW - admin'
+    Title: 'DevLiamW - admin',
+    logOut: req.session.logOut
   });
 });
 

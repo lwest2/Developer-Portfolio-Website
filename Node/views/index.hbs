@@ -18,10 +18,16 @@
         </li>
       </ul>
     </div>
-    <form class="form-inline my-2 my-lg-0">
-      <button onclick="location.href='signin'" class="btn btn-link btn-sm my-2 my-sm-0" type="button">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
-      <button onclick="location.href='signup'" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="button">Sign Up</button>
+    {{# if logOut }}
+    <form action="/signout" method="POST" class="form-inline my-2 my-lg-0">
+      <button class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="submit">Sign Out</button>
     </form>
+    {{else}}
+    <form class="form-inline my-2 my-lg-0">
+      <button onclick="location.href='/signin'" class="btn btn-link btn-sm my-2 my-sm-0" type="button">Sign In<span class="signinicon"><i class="fas fa-sign-in-alt fa-lg"></i></span></button>
+      <button onclick="location.href='/signup'" class="btn btn-primary btnSignUp shadow btn-sm my-2 my-sm-0" type="button">Sign Up</button>
+    </form>
+    {{/if}}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
