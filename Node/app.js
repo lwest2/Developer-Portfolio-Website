@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var hbs = require('express-handlebars')
 var logger = require('morgan');
-var indexRouter = require('./routes/index');
+var methods = require('./routes/index');
+var indexRouter = methods.router;
 var expressValidator = require('express-validator');
 var expressSession = require('express-session');
+
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -28,11 +30,15 @@ app.use(bodyParser.urlencoded({
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressSession({
+var session = expressSession({
   secret: 'liam',
   saveUninitialized: false,
   resave: false
-}));
+});
+
+console.log("Initializing express Middleware");
+app.use(session);
+
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
@@ -51,4 +57,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {
+  app: app,
+  session: session
+}
+//module.exports = app;

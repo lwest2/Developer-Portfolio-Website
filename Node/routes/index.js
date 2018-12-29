@@ -1,11 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var assert = require('assert');
-
 var mongoose = require('mongoose');
 //password encryption
 var bcrypt = require('bcryptjs');
-
 // Ux1gby6fno28IRcd
 
 const uri = "mongodb://pstLiam:Ux1gby6fno28IRcd@cluster0-shard-00-00-7vtg3.mongodb.net:27017,cluster0-shard-00-01-7vtg3.mongodb.net:27017,cluster0-shard-00-02-7vtg3.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
@@ -34,7 +32,10 @@ var UserSchema = new Schema({
     required: true
   },
   loggedIn: {
-    type: Boolean,
+    type: Boolean
+  },
+  admin: {
+    type: Boolean
   }
 }, {
   collection: 'users'
@@ -42,6 +43,26 @@ var UserSchema = new Schema({
 
 var User = mongoose.model('User', UserSchema);
 
+var MessageSchema = new Schema({
+  message: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    format: "date-time",
+    required: true,
+    description: "YYYY-MM- DDThh:mm:ssZ in UTC time"
+  }
+}, {
+  collection: 'messages'
+});
+
+var Messages = mongoose.model('Messages', MessageSchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -140,7 +161,10 @@ router.post('/signin', function(req, res, next) {
           req.session.errorLoggedin = false;
           user.loggedIn = true;
           req.session.logOut = true;
+
+          // use to test if admin
           req.session.userValues = user;
+
           user.save(function(err) {
             if (err) {
               console.log("user update error");
@@ -189,6 +213,7 @@ router.post('/signup', function(req, res, next) {
   }).withMessage('Invalid password').equals(req.body.confPasswordSignup).withMessage('Passwords do not match.');
 
   var errors = req.validationErrors();
+
   User.findOne({
     email: req.body.emailSignup
   }, function(err, user) {
@@ -225,7 +250,8 @@ router.post('/signup', function(req, res, next) {
       var userData = {
         email: req.body.emailSignup,
         password: hash,
-        loggedIn: false
+        loggedIn: false,
+        admin: false
       }
 
       var data = new User(userData);
@@ -244,4 +270,76 @@ router.get('/admin', function(req, res, next) {
   });
 });
 
-module.exports = router;
+var sockets = {};
+
+sockets.init = function(server) {
+  console.log("Starting socket");
+
+  var io = require('socket.io').listen(server);
+
+  var sharedsession = require("express-socket.io-session");
+  var methodssess = require('../app');
+  var expressSessionMiddleware = methodssess.session;
+  // reference: https://www.youtube.com/watch?v=8Y6mWhcdSUM
+  io.use(sharedsession(expressSessionMiddleware, {
+    autoSave: true
+  }));
+
+
+  // connect to socket.io
+  io.sockets.on('connection', function(socket) {
+
+    console.log("socket connected");
+    // send status
+    sendStatus = function(s) {
+      socket.emit('status', s);
+    }
+
+    // get chatlog
+    Messages.find().limit(30).sort({
+      date: 1
+    }).exec(function(err, res) {
+      if (err) {
+        console.log("log messages error");
+      } else {
+        console.log("RESULT: " + res);
+        socket.emit('output', res);
+      }
+    });
+
+    // handle input
+    socket.on('input', function(data) {
+      var messageData = {
+        message: data.message,
+        email: socket.handshake.session.userValues.email,
+        date: new Date()
+      }
+
+      console.log(messageData);
+
+      if (messageData == '') {
+        console.log("No message");
+      } else {
+        // insert messageData
+        var dataMes = new Messages(messageData);
+        dataMes.save(),
+          function() {
+            client.emit('output', [data]);
+
+            sendStatus({
+              message: 'Message sent'
+            });
+          };
+      }
+    });
+
+
+  });
+}
+
+module.exports = {
+  sockets: sockets,
+  router: router
+}
+
+// module.exports = router;
