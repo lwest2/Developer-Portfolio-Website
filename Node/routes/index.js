@@ -48,7 +48,11 @@ var MessageSchema = new Schema({
     type: String,
     required: true
   },
-  email: {
+  author: {
+    type: String,
+    required: true
+  },
+  recipitent: {
     type: String,
     required: true
   },
@@ -57,7 +61,7 @@ var MessageSchema = new Schema({
     format: "date-time",
     required: true,
     description: "YYYY-MM- DDThh:mm:ssZ in UTC time"
-  }
+  },
 }, {
   collection: 'messages'
 });
@@ -68,8 +72,8 @@ var Messages = mongoose.model('Messages', MessageSchema);
 router.get('/', function(req, res, next) {
   res.render('index', {
     Title: 'DevLiamW - Homepage',
-    logOut: req.session.logOut
-
+    logOut: req.session.logOut,
+    admin: req.session.admin
   });
 });
 
@@ -77,7 +81,8 @@ router.get('/', function(req, res, next) {
 router.get('/blog', function(req, res, next) {
   res.render('blog', {
     Title: 'DevLiamW - Blog',
-    logOut: req.session.logOut
+    logOut: req.session.logOut,
+    admin: req.session.admin
 
   });
 });
@@ -85,7 +90,8 @@ router.get('/blog', function(req, res, next) {
 router.get('/blogpost', function(req, res, next) {
   res.render('blogpost', {
     Title: 'DevLiamW - Blog Post',
-    logOut: req.session.logOut
+    logOut: req.session.logOut,
+    admin: req.session.admin
   });
 });
 
@@ -93,7 +99,8 @@ router.get('/blogpost', function(req, res, next) {
 router.get('/portfolio', function(req, res, next) {
   res.render('portfolio', {
     Title: 'DevLiamW - Portfolio',
-    logOut: req.session.logOut
+    logOut: req.session.logOut,
+    admin: req.session.admin
 
   });
 });
@@ -101,7 +108,8 @@ router.get('/portfolio', function(req, res, next) {
 router.get('/portfolioitem', function(req, res, next) {
   res.render('portfolioitem', {
     Title: 'DevLiamW - Portfolio Item',
-    logOut: req.session.logOut
+    logOut: req.session.logOut,
+    admin: req.session.admin
   });
 });
 
@@ -141,6 +149,8 @@ router.get('/signin', function(req, res, next) {
     errorSignin: req.session.errorSignin,
     errorLoggedin: req.session.errorLoggedin,
     logOut: req.session.logOut,
+    admin: req.session.admin,
+    users: req.session.users
   });
 });
 
@@ -163,6 +173,7 @@ router.post('/signin', function(req, res, next) {
           req.session.logOut = true;
 
           // use to test if admin
+          req.session.admin = user.admin;
           req.session.userValues = user;
 
           user.save(function(err) {
@@ -266,15 +277,16 @@ router.post('/signup', function(req, res, next) {
 router.get('/admin', function(req, res, next) {
   res.render('admin', {
     Title: 'DevLiamW - admin',
-    logOut: req.session.logOut
+    logOut: req.session.logOut,
+    admin: req.session.admin
   });
 });
 
 var sockets = {};
+var users = []; // List of users to display to admin
 
 sockets.init = function(server) {
   console.log("Starting socket");
-
   var io = require('socket.io').listen(server);
 
   var sharedsession = require("express-socket.io-session");
@@ -285,54 +297,44 @@ sockets.init = function(server) {
     autoSave: true
   }));
 
-
-  // connect to socket.io
   io.sockets.on('connection', function(socket) {
+    // client connected
 
-    console.log("socket connected");
-    // send status
-    sendStatus = function(s) {
-      socket.emit('status', s);
-    }
+    socket.on('new user', function() {
+      // add new user Id
 
-    // get chatlog
-    Messages.find().limit(30).sort({
-      date: 1
-    }).exec(function(err, res) {
-      if (err) {
-        console.log("log messages error");
-      } else {
-        console.log("RESULT: " + res);
-        socket.emit('output', res);
+      // if loggedIn
+      if (socket.handshake.session.logOut) {
+        // check if already in array
+
+        if (!users.includes(socket.handshake.session.userValues.email) && !socket.handshake.session.userValues.admin) {
+          users.push(socket.handshake.session.userValues.email);
+          socket.handshake.session.users = users;
+
+        }
+
+        // Test data
+        users.push("Test 1");
+        users.push("Test 2");
+        socket.handshake.session.users = users;
       }
     });
 
-    // handle input
     socket.on('input', function(data) {
-      var messageData = {
-        message: data.message,
-        email: socket.handshake.session.userValues.email,
-        date: new Date()
-      }
+      // when client inputs data
 
-      console.log(messageData);
-
-      if (messageData == '') {
-        console.log("No message");
-      } else {
-        // insert messageData
-        var dataMes = new Messages(messageData);
-        dataMes.save(),
-          function() {
-            client.emit('output', [data]);
-
-            sendStatus({
-              message: 'Message sent'
-            });
-          };
-      }
     });
 
+    socket.on('display', function(data) {
+      // if client is equal to admin
+      if (socket.handshake.session.userValues.admin) {
+        var selectedUser = data.selectedUser;
+
+        // Sort and find all messages on DB relating to selectedUser (email)
+
+        // Display in handlebars the messages
+      }
+    });
 
   });
 }

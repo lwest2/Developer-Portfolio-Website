@@ -27,40 +27,95 @@
 
   <body>
 
+
+
       {{#if logOut}}
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="chatnowButton">
-              <a class="btn btn-primary btn jumbotronButton shadow" role="button" data-toggle="collapse" href="#collapseChat" aria-expanded="false" aria-controls="collapseChat">Live Chat Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="collapse chat" id="collapseChat">
-        <div class="card bg-light mb-3" style="width: 18rem;">
-          <div class="card-header">
-          <h5 class="card-title">Chat</h5>
-          </div>
-          <div class="card-body">
-            <div id="outputMessages">
-
-            </div>
-            <hr></hr>
-            <form>
-            <div class="row">
-              <div class="col-sm inputMessage">
-                <div class="form-group input-group">
-                  <textarea class="form-control sendMessageText" id="messageChat" rows="3" maxlength="200" name="messageChat"></textarea>
-                  <button class="btn btn-primary btn jumbotronButton shadow input-group-addon sendMessageButton" role="button" type="button" name="sendMessage" id="sendmsgBtn">Send</button>
+            {{#if admin}}
+            <!-- Admin Connection -->
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="chatnowButton">
+                      <a class="btn btn-primary btn jumbotronButton shadow" role="button" data-toggle="collapse" href="#collapseChat" aria-expanded="false" aria-controls="collapseChat">Live Chat Now</a>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
+
+              <div class="collapse chat" id="collapseChat">
+                <div class="card bg-light mb-3" style="width: 36rem;">
+                  <div class="card-header">
+                  <h5 class="card-title">Chat</h5>
+                  </div>
+                  <div class="card-body">
+                    <form>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <label for="Select">Select Chat</label>
+                            <select class="form-control" id="Select" name="selectUser">
+                              {{#each users}}
+                              <option>{{this}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-8">
+                          <div id="outputMessages">
+                            <div class="card bg-light mb-3"  style="height: 20rem;">
+
+                            </div>
+                          </div>
+                          <hr></hr>
+
+                          <div class=" inputMessage">
+                            <div class="form-group input-group">
+                              <textarea class="form-control sendMessageText" id="messageChat" rows="3" maxlength="200" name="messageChat"></textarea>
+                              <button class="btn btn-primary btn jumbotronButton shadow input-group-addon sendMessageButton" role="button" type="button" name="sendMessage" id="sendmsgBtn">Send</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {{else}}
+            <!-- Client Connection -->
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="chatnowButton">
+                      <a class="btn btn-primary btn jumbotronButton shadow" role="button" data-toggle="collapse" href="#collapseChat" aria-expanded="false" aria-controls="collapseChat">Live Chat Now</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="collapse chat" id="collapseChat">
+                <div class="card bg-light mb-3" style="width: 18rem;">
+                  <div class="card-header">
+                  <h5 class="card-title">Chat</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="outputMessages" style="height: 20rem;">
+
+                    </div>
+                    <hr></hr>
+                    <form>
+                    <div class="row">
+                      <div class="col-sm inputMessage">
+                        <div class="form-group input-group">
+                          <textarea class="form-control sendMessageText" id="messageChat" rows="3" maxlength="200" name="messageChat"></textarea>
+                          <button class="btn btn-primary btn jumbotronButton shadow input-group-addon sendMessageButton" role="button" type="button" name="sendMessage" id="sendmsgBtn">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
       {{/if}}
 
       {{{ body }}}

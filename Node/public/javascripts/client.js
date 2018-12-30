@@ -9,8 +9,10 @@ $(document).ready(function() {
   if (socket !== undefined) {
     console.log("Connected to socket.");
 
-    $('#sendmsgBtn').on('click', function(event) {
+    socket.emit('new user');
 
+    // send message
+    $('#sendmsgBtn').on('click', function(event) {
       socket.emit('input', {
         message: inputMsg.value
       });
@@ -29,5 +31,14 @@ $(document).ready(function() {
         event.preventDefault();
       }
     });
+    // end send message
+
+    // Select user if Admin
+    $('#Select').change(function() {
+      socket.emit('display', {
+        selectedUser: $('#Select').val()
+      });
+    });
+
   }
 });
