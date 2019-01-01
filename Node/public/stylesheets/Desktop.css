@@ -377,3 +377,8 @@ select.form-control[multiple], select.form-control[size] {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+.overflowHelper {
+  overflow-y: scroll;
+  height: 200px;
+}

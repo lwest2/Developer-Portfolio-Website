@@ -52,7 +52,7 @@ var MessageSchema = new Schema({
     type: String,
     required: true
   },
-  recipitent: {
+  recipient: {
     type: String,
     required: true
   },
@@ -149,8 +149,7 @@ router.get('/signin', function(req, res, next) {
     errorSignin: req.session.errorSignin,
     errorLoggedin: req.session.errorLoggedin,
     logOut: req.session.logOut,
-    admin: req.session.admin,
-    users: req.session.users
+    admin: req.session.admin
   });
 });
 
@@ -283,7 +282,8 @@ router.get('/admin', function(req, res, next) {
 });
 
 var sockets = {};
-var users = []; // List of users to display to admin
+var users = {};
+var userswithuniqueID = {};
 
 sockets.init = function(server) {
   console.log("Starting socket");
@@ -305,37 +305,169 @@ sockets.init = function(server) {
 
       // if loggedIn
       if (socket.handshake.session.logOut) {
-        // check if already in array
+        // check if already in list
 
-        if (!users.includes(socket.handshake.session.userValues.email) && !socket.handshake.session.userValues.admin) {
-          users.push(socket.handshake.session.userValues.email);
-          socket.handshake.session.users = users;
-
+        if (socket.handshake.session.userValues.email in users) {
+          console.log("email is already in users list");
+        } else {
+          socket.userID = socket.handshake.session.userValues.email;
+          console.log("Should equal to user email: " + socket.userID);
+          users[socket.userID] = socket;
+          console.log("socket: " + socket);
         }
-
-        // Test data
-        users.push("Test 1");
-        users.push("Test 2");
-        socket.handshake.session.users = users;
+        updateUserList();
       }
+
     });
+
+    function updateUserList() {
+      io.sockets.emit('updateUsers', Object.keys(users));
+    }
 
     socket.on('input', function(data) {
       // when client inputs data
+      var msg = data.message;
+      var recipient;
+      var author;
+
+      // if admin sends msg, msg recipient is equal to selectedUser
+      // else recipient is admin
+      if (socket.handshake.session.userValues.admin) {
+        var selectedUser = data.selectedUser;
+        recipient = selectedUser
+        author = socket.userID;
+      } else {
+        recipient = "liamwest1@hotmail.com";
+        author = socket.userID;
+      }
+
+      var msgData = {
+        message: msg,
+        author: author,
+        recipient: recipient,
+        date: new Date()
+      };
+
+      var dataToSend = new Messages(msgData);
+      dataToSend.save();
+
+      // search array of sockets for selected user
+
+
+      // for every user in users (email)
+      if (socket.userID == "liamwest1@hotmail.com") {
+        for (var key in users) {
+          console.log("key " + key + "has value " + users[key]);
+          var compareKey = "liamwest1@hotmail.com";
+          if (key == compareKey) {
+            var receiver = users[key].id;
+            io.to(receiver).emit('new message', msgData);
+            console.log("Key was liamwest1@hotmail.com and is sending to it");
+          }
+          if (key == selectedUser) {
+            var receiver2 = users[key].id;
+            io.to(receiver2).emit('new message', msgData);
+            console.log("Key was selectedUser and is sending to it");
+          }
+        }
+      } else {
+        for (var key2 in users) {
+          console.log("key " + key + "has value " + users[key2]);
+          var compareKey = "liamwest1@hotmail.com";
+          if (key2 == compareKey) {
+            var receiver3 = users[key2].id;
+            io.to(receiver3).emit('new message', msgData);
+            console.log("Key was liamwest1@hotmail.com and is sending to it");
+          }
+          if (key2 == socket.userID) {
+            var receiver4 = users[key2].id;
+            io.to(receiver4).emit('new message', msgData);
+            console.log("Key was selectedUser and is sending to it");
+          }
+        }
+      }
+
 
     });
 
     socket.on('display', function(data) {
-      // if client is equal to admin
-      if (socket.handshake.session.userValues.admin) {
+      // still needs implementing.
+      // Problem:
+      //  Gather all data relating to 1 conversation. (In order of time)
+      //  Admin / User will be different (if statement required?)
+      // Send message array back to client (client could be user or admin)
+      if (socket.handshake.session.logOut) {
         var selectedUser = data.selectedUser;
+        // if socket ID is liamwest1@hotmail.com
+        // find Messages where
+        // recipient: selectedUser && author: "liamwest1@hotmail.com"
+        // or
+        // recipient: "liamwest1@hotmail.com" && author: selectedUser
 
-        // Sort and find all messages on DB relating to selectedUser (email)
+        // else (socketID is diff user)
+        // find Messages where
+        // recipient: "liamwest1@hotmail.com" && author: socketID
+        // or
+        // recipient: socketID && author: "liamwest1@hotmail.com"
+        console.log("userID is: " + socket.userID)
+        if (socket.userID == "liamwest1@hotmail.com") {
+          console.log("Finding messages");
+          Messages.find({
+            $or: [{
+                recipient: selectedUser,
+                author: socket.userID // liamwest1@hotmail.com
+              },
+              {
+                recipient: socket.userID, // liamwest1@hotmail
+                author: selectedUser
+              }
+            ]
+          }).sort({
+            date: -1
+          }).exec(function(err, docs) {
+            if (err) {
+              console.log(err);
+            }
 
-        // Display in handlebars the messages
+            // emit to socket (load messages)
+            users[socket.userID].emit('load messages', {
+              messages: docs
+            });
+          });
+        } else {
+          console.log("Finding messages");
+          Messages.find({
+            $or: [{
+                recipient: "liamwest1@hotmail.com",
+                author: socket.userID // whoever sent the message
+              },
+              {
+                recipient: socket.userID, // liamwest1@hotmail
+                author: "liamwest1@hotmail.com"
+              }
+            ]
+          }).sort({
+            date: -1
+          }).exec(function(err, docs) {
+            if (err) {
+              console.log(err);
+            }
+
+            console.log("userID: " + users[socket.userID]);
+            // emit to socket (load messages)
+            users[socket.userID].emit('load messages', {
+              messages: docs
+            });
+          });
+        }
       }
     });
 
+    socket.on('disconnect', function(data) {
+      if (!socket.userID) return;
+      delete users[socket.userID];
+      updateUserList();
+    });
   });
 }
 
