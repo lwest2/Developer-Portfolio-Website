@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 var assert = require('assert');
 var mongoose = require('mongoose');
+var fs = require('fs');
+var multer = require('multer');
+var upload = multer({
+  dest: 'uploads/'
+});
 //password encryption
 var bcrypt = require('bcryptjs');
 // Ux1gby6fno28IRcd
@@ -68,6 +73,29 @@ var MessageSchema = new Schema({
 
 var Messages = mongoose.model('Messages', MessageSchema);
 
+var BlogSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    required: true
+  },
+  thumbnail: {
+    data: Buffer,
+    contentType: String
+    // reference: https://medium.com/@alvenw/how-to-store-images-to-mongodb-with-node-js-fb3905c37e6d
+  },
+}, {
+  collection: 'blogs'
+});
+
+var Blogs = mongoose.model('Blogs', BlogSchema);
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -262,7 +290,7 @@ router.post('/signup', function(req, res, next) {
         password: hash,
         loggedIn: false,
         admin: false
-      }
+      };
 
       var data = new User(userData);
       // reference: https://stackoverflow.com/questions/48581681/node-app-crashes-when-receiving-a-duplicate-email-address-e11000-duplicate-key-e
@@ -274,12 +302,93 @@ router.post('/signup', function(req, res, next) {
 });
 
 router.get('/admin', function(req, res, next) {
-  res.render('admin', {
-    Title: 'DevLiamW - admin',
-    logOut: req.session.logOut,
-    admin: req.session.admin
+  if (!req.session.admin) {
+    res.status(401).send();
+  } else {
+    Blogs.find({},
+      function(err, docs) {
+        if (err) {
+          console.log(err);
+        }
+        res.render('admin', {
+          Title: 'DevLiamW - admin',
+          logOut: req.session.logOut,
+          admin: req.session.admin,
+          blogs: docs
+        });
+      });
+  }
+});
+
+// Admin Panel
+// Manage Blogs
+// Add Blog
+router.post('/admin/addblog', upload.single('addblog_thumbnail'), function(req, res, next) {
+  var blogData = {
+    title: req.body.addblog_title,
+    content: req.body.addblog_content,
+    date: req.body.addblog_date,
+    thumbnail: null
+  };
+
+  var blog = new Blogs(blogData);
+
+  blog.thumbnail.data = fs.readFileSync(req.file.path);
+  blog.thumbnail.contentType = 'image/png';
+
+  blog.save(function(err) {
+    if (err) {
+      console.log("err: " + err)
+    }
+    res.redirect('/admin');
   });
 });
+// Get Blog
+router.post('/admin/getblog', function(req, res, next) {
+
+  Blogs.findOne({
+      title: req.body.blogtitle
+    },
+    function(err, docs) {
+      if (err) {
+        console.log(err);
+      } else if (docs) {
+        var data = {
+          title: docs.title,
+          content: docs.content,
+          date: docs.date
+        };
+        res.send(data);
+      } else {
+        console.log("No blogs found!");
+      }
+    });
+});
+
+// Edit Blog
+router.post('/admin/editblog', function(req, res, next) {
+
+});
+// Delete Blog
+router.post('/admin/deleteblog', function(req, res, next) {
+
+});
+// Show Blog
+
+// Manage Portfolio
+// Add Item
+router.post('/admin/additem', function(req, res, next) {
+
+});
+// Edit Item
+router.post('/admin/edititem', function(req, res, next) {
+
+});
+// Delete Item
+router.post('/admin/deleteitem', function(req, res, next) {
+
+});
+//Show Item
 
 var sockets = {};
 var users = {};
