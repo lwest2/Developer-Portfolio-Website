@@ -54,6 +54,8 @@
   </div>
 
   <!-- Div Complementary -->
+
+  {{# if blogTitle}}
   <aside role="complementary">
     <div class="container recentBlogHelper">
       <div class="row">
@@ -63,18 +65,17 @@
       </div>
       <div class="row">
         <div class="col-sm" align="right">
-          <a href="#"><img class="img-fluid img-thumbnail imghighlight" src="https://via.placeholder.com/500x250"></img></a>
+          <a href="#"><img class="img-fluid img-thumbnail imghighlight" src="{{blogThumbnail}}"></img></a>
         </div>
         <div class="col-sm  recentBlog">
-          <h4 class="recentBlogSubtitle">[Title]</h4>
-          <h4 class="recentBlogDate">[Date]</h4>
+          <h4 class="recentBlogSubtitle">{{blogTitle}}</h4>
+          <h4 class="recentBlogDate">[{{blogDate}}]</h4>
           <hr>
           </hr>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas consequuntur tenetur, nesciunt tempora quis dolores, fugiat, facilis aliquid atque sequi libero ut voluptate rerum. Quae beatae laboriosam cum tempore
-            necessitatibus.</p>
+          <p id="recentContent">{{blogContent}}</p>
           <div class="col-sm blogcontenthelper">
             <span class="fa-stack fa-lg iconComment">
-              <a class="iconHover" href="https://twitter.com/DevLiamW"><i class="fa fa-circle fa-stack-2x iconBackground"></i>
+              <a class="iconHover" href="#"><i class="fa fa-circle fa-stack-2x iconBackground"></i>
                 <i class="fas fa-comment fa-stack-1x footerIconBlog"></i></a>
             </span>
             <a class="btn btn-primary btn-sm jumbotronButton shadow" href="portfolio" role="button">Go to post <i class="fas fa-chevron-right fa-sm"></i></a>
@@ -83,6 +84,7 @@
       </div>
     </div>
   </aside>
+  {{/if}}
 
   <!-- Paragraph Cluster -->
   <article role="article">
@@ -171,7 +173,8 @@
 <script src="javascripts/plugins.js"></script>
 <script src="javascripts/main.js"></script>
 <script src="javascripts/client.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.3/jquery.dotdotdot.js"></script>
+<script src="javascripts/ellipsis.js"></script>
 <!-- Google Analytics -->
 <script>
   window.ga = function() {

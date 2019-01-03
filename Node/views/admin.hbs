@@ -72,11 +72,7 @@
                         <h3>Users</h3>
                       </label>
                       <select multiple class="form-control usersList" id="userList">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+
                       </select>
                     </div>
 
@@ -84,22 +80,17 @@
                   <div class="col-sm-6">
                     <div class="row">
                       <div class="col-sm">
-                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" role="button" id="fetchUsers">Get Users</i></a>
+                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" role="button" id="fetchUsers">Update List</i></a>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm">
-                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Update List</i></a>
+                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList" role="button" id="removeUsers">Remove User</i></a>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-sm">
-                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList" href="#" role="button">Remove User</i></a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm">
-                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Ban User via E-mail</i></a>
+                        <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" role="button" id="banUsers">Ban User via E-mail</i></a>
                       </div>
                     </div>
                   </div>
@@ -117,45 +108,45 @@
               </nav>
               <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-create" role="tabpanel" aria-labelledby="nav-create-tab">
-                  <form class="forms" method="POST" id="addItemForm">
+                  <form class="forms" method="POST" id="addItemForm" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="Title">
                         <h4>Title</h4>
                       </label>
-                      <textarea class="form-control" id="Title" rows="1" maxlength="35"></textarea>
+                      <textarea class="form-control" id="Title" rows="1" maxlength="35" name="addportfolio_title"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="Content">
                         <h4>Content &lt;HTML&gt;</h4>
                       </label>
-                      <textarea class="form-control" id="Content" rows="15"></textarea>
+                      <textarea class="form-control" id="Content" rows="15" name="addportfolio_content"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="datepicker">
                         <h4>Date of Project</h4>
                       </label>
-                      <input id="datepicker" width="auto" />
+                      <input id="datepicker" width="auto"  name="addportfolio_date"/>
                     </div>
                     <div class="form-group">
                       <label for="imagethumbnail">
                         <h4>Thumbnail <i class="fas fa-image"></i></h4>
                       </label>
-                      <input type="file" class="form-control-file" id="imagethumbnail">
+                      <input type="file" class="form-control-file" id="imagethumbnail" name="addportfolio_thumbnail"/>
                     </div>
 
-                    <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/additem" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></a>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/additem" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
                     <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Preview <i class="fas fa-eye fa-sm"></i></a>
                     <a class="btn btn-primary btn-sm jumbotronButton shadow btnUserList2 clearBtn" role="button" id="clearAddItem">Clear</a>
                   </form>
                 </div>
 
                 <div class="tab-pane fade" id="nav-edit" role="tabpanel" aria-labelledby="nav-edit-tab">
-                  <form class="forms" method="POST" id="editItemForm">
+                  <form class="forms" method="POST" id="editItemForm" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="selectitem2">
                         <h4>Select Portfolio Item to Edit</h4>
                       </label>
-                      <select class="form-control" id="selectitem2">
+                      <select class="form-control" id="selectitem2" name="selectitem2">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -167,30 +158,30 @@
                       <label for="Title2">
                         <h4>Title</h4>
                       </label>
-                      <textarea class="form-control" id="Title2" rows="1" maxlength="35"></textarea>
+                      <textarea class="form-control" id="Title2" rows="1" maxlength="35" name="editportfolio_title"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="Content2">
                         <h4>Content &lt;HTML&gt;</h4>
                       </label>
-                      <textarea class="form-control" id="Content2" rows="15"></textarea>
+                      <textarea class="form-control" id="Content2" rows="15" name="editportfolio_content"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="datepicker2">
                         <h4>Date of Project</h4>
                       </label>
-                      <input id="datepicker2" width="auto" />
+                      <input id="datepicker2" width="auto" name="editportfolio_date" />
                     </div>
                     <div class="form-group">
                       <label for="imagethumbnail2">
                         <h4>Thumbnail <i class="fas fa-image"></i></h4>
                       </label>
-                      <input type="file" class="form-control-file" id="imagethumbnail2">
+                      <input type="file" class="form-control-file" id="imagethumbnail2" name="editportfolio_thumbnail"/>
                     </div>
 
-                    <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/edititem" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></a>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/edititem" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
                     <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Preview <i class="fas fa-eye fa-sm"></i></a>
-                    <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteitem" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></a>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteitem" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
                     <a class="btn btn-primary btn-sm jumbotronButton shadow btnUserList2 clearBtn" role="button" id="clearEditItem">Clear</a>
                   </form>
                 </div>
@@ -229,7 +220,7 @@
                       <label for="imagethumbnail4">
                         <h4>Thumbnail <i class="fas fa-image"></i></h4>
                       </label>
-                      <input type="file" class="form-control-file" id="imagethumbnail4" name="addblog_thumbnail">
+                      <input type="file" class="form-control-file" id="imagethumbnail4" name="addblog_thumbnail"/>
                     </div>
 
                     <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/addblog" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
@@ -238,12 +229,12 @@
                   </form>
                 </div>
                 <div class="tab-pane fade" id="nav-editblog" role="tabpanel" aria-labelledby="nav-editblog-tab">
-                  <form class="forms" method="POST" id="editBlogForm">
+                  <form class="forms" method="POST" id="editBlogForm"  enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="selectitem3">
                         <h4>Select Blog Post to Edit</h4>
                       </label>
-                      <select class="form-control" id="selectitem3">
+                      <select class="form-control" id="selectitem3" name="selectitem3">
                         {{#if blogs}}
                         {{#each blogs}}
                           <option>{{this.title}}</option>
@@ -255,30 +246,30 @@
                       <label for="Title3">
                         <h4>Title</h4>
                       </label>
-                      <textarea class="form-control" id="Title3" rows="1" maxlength="35"></textarea>
+                      <textarea class="form-control" id="Title3" rows="1" maxlength="35" name="editblog_title"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="Content3">
                         <h4>Content &lt;HTML&gt;</h4>
                       </label>
-                      <textarea class="form-control" id="Content3" rows="15"></textarea>
+                      <textarea class="form-control" id="Content3" rows="15" name="editblog_content"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="datepicker3">
                         <h4>Date of Blog</h4>
                       </label>
-                      <input id="datepicker3" width="auto" />
+                      <input id="datepicker3" width="auto" name="editblog_date"/>
                     </div>
                     <div class="form-group">
                       <label for="imagethumbnail3">
-                        <h4>Thumbnail <i class="fas fa-image"></i></h4>
+                        <h4>Upload new Thumbnail <i class="fas fa-image"></i></h4>
                       </label>
-                      <input type="file" class="form-control-file" id="imagethumbnail3">
+                      <input type="file" class="form-control-file" id="imagethumbnail3" name="editblog_thumbnail"/>
                     </div>
 
-                    <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/editblog" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></a>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/editblog" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
                     <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Preview <i class="fas fa-eye fa-sm"></i></a>
-                    <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteblog" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></a>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteblog" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
                     <a class="btn btn-primary btn-sm jumbotronButton shadow btnUserList2 clearBtn" role="button" id="clearEditBlog">Clear</a>
                   </form>
                 </div>
