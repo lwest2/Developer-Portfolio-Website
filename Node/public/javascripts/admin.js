@@ -28,6 +28,16 @@ $(document).ready(function(event) {
     populatePortfolio();
   });
 
+  $('#removePortfolio').on('click', function(event) {
+    event.preventDefault();
+    removePortfolio();
+  })
+
+  $('#removeBlog').on('click', function(event) {
+    event.preventDefault();
+    removeBlog();
+  })
+
   $('#fetchUsers').on('click', function(event) {
     event.preventDefault();
     populateUsers();
@@ -151,4 +161,50 @@ function banUsers() {
       console.log("No data");
     }
   });
+}
+
+function removePortfolio() {
+  var chosen = $('#selectitem2').val();
+  $.ajax({
+    type: 'POST',
+    url: '/admin/deleteitem',
+    data: {
+      item: chosen
+    },
+    success: function(data) {
+      console.log(data);
+      listRemovePortfolio();
+    },
+    error: function() {
+      console.log("Could not portfolio: delete error");
+    }
+  });
+}
+
+function listRemovePortfolio() {
+  $('#selectitem2 option:selected').remove();
+  populatePortfolio();
+}
+
+function removeBlog() {
+  var chosen = $('#selectitem3').val();
+  $.ajax({
+    type: 'POST',
+    url: '/admin/deleteblog',
+    data: {
+      blog: chosen
+    },
+    success: function(data) {
+      console.log(data);
+      listRemoveBlog();
+    },
+    error: function() {
+      console.log("Could not blog: delete error");
+    }
+  });
+}
+
+function listRemovePortfolio() {
+  $('#selectitem3 option:selected').remove();
+  populateBlog();
 }

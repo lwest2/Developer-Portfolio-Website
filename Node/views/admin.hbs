@@ -117,7 +117,7 @@
                     </div>
                     <div class="form-group">
                       <label for="Content">
-                        <h4>Content &lt;HTML&gt;</h4>
+                        <h4>Content (HTML)</h4>
                       </label>
                       <textarea class="form-control" id="Content" rows="15" name="addportfolio_content"></textarea>
                     </div>
@@ -147,11 +147,11 @@
                         <h4>Select Portfolio Item to Edit</h4>
                       </label>
                       <select class="form-control" id="selectitem2" name="selectitem2">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        {{#if portfolio}}
+                        {{#each portfolio}}
+                          <option>{{this.title}}</option>
+                        {{/each}}
+                        {{/if}}
                       </select>
                     </div>
                     <div class="form-group">
@@ -162,7 +162,7 @@
                     </div>
                     <div class="form-group">
                       <label for="Content2">
-                        <h4>Content &lt;HTML&gt;</h4>
+                        <h4>Content (HTML)</h4>
                       </label>
                       <textarea class="form-control" id="Content2" rows="15" name="editportfolio_content"></textarea>
                     </div>
@@ -181,7 +181,7 @@
 
                     <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/edititem" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
                     <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Preview <i class="fas fa-eye fa-sm"></i></a>
-                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteitem" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" id="removePortfolio" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
                     <a class="btn btn-primary btn-sm jumbotronButton shadow btnUserList2 clearBtn" role="button" id="clearEditItem">Clear</a>
                   </form>
                 </div>
@@ -206,7 +206,7 @@
                     </div>
                     <div class="form-group">
                       <label for="Content4">
-                        <h4>Content &lt;HTML&gt;</h4>
+                        <h4>Content (HTML)</h4>
                       </label>
                       <textarea class="form-control" id="Content4" rows="15" name="addblog_content"></textarea>
                     </div>
@@ -250,7 +250,7 @@
                     </div>
                     <div class="form-group">
                       <label for="Content3">
-                        <h4>Content &lt;HTML&gt;</h4>
+                        <h4>Content (HTML)</h4>
                       </label>
                       <textarea class="form-control" id="Content3" rows="15" name="editblog_content"></textarea>
                     </div>
@@ -269,7 +269,7 @@
 
                     <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/editblog" role="submit" type="submit">Submit <i class="fas fa-chevron-right fa-sm"></i></button>
                     <a class="btn btn-primary btn jumbotronButton shadow btnUserList2" href="#" role="button">Preview <i class="fas fa-eye fa-sm"></i></a>
-                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" formaction="/admin/deleteblog" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
+                    <button class="btn btn-primary btn jumbotronButton shadow btnUserList2" id="removeBlog" role="submit" type="submit">Remove <i class="fas fa-trash-alt fa-sm"></i></button>
                     <a class="btn btn-primary btn-sm jumbotronButton shadow btnUserList2 clearBtn" role="button" id="clearEditBlog">Clear</a>
                   </form>
                 </div>
@@ -334,21 +334,21 @@
 </footer>
 
 <!-- Scripts -->
-<script src="javascripts/vendor/modernizr-3.6.0.min.js"></script>
-<script src="javascripts/vendor/jquery-3.3.1.min.js"></script>
+<script src="public/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+<script src="public/javascripts/vendor/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 <script>
-  window.jQuery || document.write('<script src="javascripts/vendor/jquery-3.3.1.min.js"><\/script>')
+  window.jQuery || document.write('<script src="public/javascripts/vendor/jquery-3.3.1.min.js"><\/script>')
 </script>
-<script src="javascripts/plugins.js"></script>
-<script src="javascripts/main.js"></script>
-<script src="javascripts/adminDialogueBoxExit.js"></script>
-<script src="javascripts/adminDatePicker.js"></script>
+<script src="public/javascripts/plugins.js"></script>
+<script src="public/javascripts/main.js"></script>
+<script src="public/javascripts/adminDialogueBoxExit.js"></script>
+<script src="public/javascripts/adminDatePicker.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-<script src="javascripts/client.js"></script>
-<script src="javascripts/admin.js"></script>
+<script src="public/javascripts/client.js"></script>
+<script src="public/javascripts/admin.js"></script>
 <!-- Google Analytics -->
 <script>
   window.ga = function() {

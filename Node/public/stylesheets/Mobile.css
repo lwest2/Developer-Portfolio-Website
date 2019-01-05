@@ -250,6 +250,10 @@ body {
    transition: opacity 0.5s;
  }
 
+ .portfolioimg {
+   margin-bottom: 20px;
+ }
+
 
  /*
   * Admin Panel

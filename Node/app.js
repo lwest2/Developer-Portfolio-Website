@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static('public'));
 var session = expressSession({
   secret: 'liam',
   saveUninitialized: false,

@@ -236,6 +236,13 @@ body {
    transition: opacity 0.5s;
  }
 
+ .portfolioimg {
+   margin-bottom: 20px;
+ }
+
+ .carousel-control-next, .carousel-control-prev {
+     filter: invert(100%);
+ }
 
  /*
   * Admin Panel
