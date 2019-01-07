@@ -297,6 +297,8 @@ router.get('/portfolio', function(req, res, next) {
         docs[i].thumbnail.path = file;
       }
 
+      console.log(docs);
+
       res.render('portfolio', {
         Title: 'DevLiamW - Portfolio',
         logOut: req.session.logOut,
